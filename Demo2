@@ -34,4 +34,7 @@ git init
 git config --global user.name "medha7299"
 git config --global user.email "medhagaonkar5@gmail.com"
 git commit -m "initial commit"
+git remote add origin https://github.com/medha7299/DockerP.git
+git branch -M master
+git push -u origin master
 
