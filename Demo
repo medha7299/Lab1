@@ -1,0 +1,37 @@
+docker --version 
+sudo apt install apt-trasport-https ca-certificates curl software-properties-comman -y
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+sudo docker run hello-world
+mkdir my-app
+cd my-app
+
+
+gedit app.py
+from flask import Flask
+app=Flask(__name__)
+@app.route('/')
+def home():
+    return 'hello world running succesfully'
+if __name__=='__main__':
+    app.run(host='0.0.0.0',port=5001)
+
+gedit requirements.txt
+flask
+
+gedit Dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
+EXPOSE 5001
+CMD ["python","app.py"]
+
+sudo systemctl start docker
+sudo systemctl status docker
+sudo docker build -t image-pqr .
+sudo docker images
+sudo docker run -d -p 5001:5001 --name container image-pqr
