@@ -1,0 +1,72 @@
+Jenkinsfile
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven'
+        jdk 'JDK21'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url:'https://github.com/medha7299/Maven.git',
+                credentialsId: 'github-token'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        
+        
+        }
+        stage('Run Application') {
+            steps {
+                sh 'mvn exec:java -Dexec.mainClass="com.example.app.App"'
+            }
+        }
+    }
+    post {
+
+        success {
+            emailext (
+                subject: "SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
+                body: "Build succeeded!\nCheck: ${BUILD_URL}",
+                to: "medhagaonkar5@gmail.com"
+            )
+        }
+
+        failure {
+            emailext (
+                subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
+                body: "Build failed!\nCheck: ${BUILD_URL}",
+                to: "medhagaonkar5@gmail.com"
+            )
+        }
+    }
+}
+
+
+
+login to google account --manage google account
+security & signin:enable 2v
+search--App password svae the code
+in jenkins settings--Systems---Extended email notification 
+                             ---smtp.gmail.com
+                            ---587 TLS credentials username--email pass--appcode
+Default recepaints email id save
